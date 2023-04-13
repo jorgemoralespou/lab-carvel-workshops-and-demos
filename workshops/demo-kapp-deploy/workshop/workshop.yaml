@@ -1,0 +1,5 @@
+name: Kapp deploy demo
+
+modules:
+  activate:
+    - workshop-demo

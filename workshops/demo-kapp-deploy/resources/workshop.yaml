@@ -1,0 +1,32 @@
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: demo-kapp-deploy
+spec:
+  title: kapp deploy in action (demo)
+  description: A demo showing kapp to deploy, update, inspect and undeploy an app.
+  workshop:
+    files:
+      - image:
+          url: $(image_repository)/demo-kapp-deploy-files:latest
+          #url: registry.apps.azure.tanzu-devs.com/demo-kapp-deploy-files:latest
+        includePaths:
+          - /workshops/demo-kapp-deploy/exercises/**
+          - /workshops/demo-kapp-deploy/workshop/**
+        newRootPath: workshops/demo-kapp-deploy
+  session:
+    namespaces:
+      budget: large
+    applications:
+      terminal:
+        enabled: true
+        layout: split
+      editor:
+        enabled: true
+      vcluster:
+        enabled: true
+        resources:
+          syncer:
+            memory: 768Mi
+          k3s:
+            memory: 1Gi

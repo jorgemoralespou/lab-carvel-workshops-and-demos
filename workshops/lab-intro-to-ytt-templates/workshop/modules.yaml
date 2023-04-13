@@ -1,0 +1,28 @@
+modules:
+    workshop-overview:
+        name: Workshop Overview
+        exit_sign: Setup Environment
+    setup-environment:
+        name: Setup Environment
+        exit_sign: Start Workshop
+    exercises/01-kubernetes-resources:
+        name: Kubernetes Resources
+    exercises/02-multiple-instances:
+        name: Multiple Instances
+    exercises/03-templates-vs-overlays:
+        name: Templates vs Overlays
+    exercises/04-processing-templates:
+        name: Processing Templates
+    exercises/05-input-data-values:
+        name: Input Data Values
+    exercises/06-value-annotations:
+        name: Value Annotations
+    exercises/07-starlark-language:
+        name: Starlark Language
+    exercises/08-conditional-logic:
+        name: Conditional Logic
+    exercises/09-data-values-files:
+        name: Data Values Files
+    workshop-summary:
+        name: Workshop Summary
+        exit_sign: Finish Workshop

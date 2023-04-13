@@ -1,0 +1,59 @@
+#!/bin/bash
+
+TEMPLATES_DIR=$(
+    cd "$(dirname $BASH_SOURCE)/../templates"
+    pwd
+)
+
+# Process command line options.
+
+SELECTORS=()
+YTT_ARGS=()
+
+shopt -s extglob
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    --+([.a-z0-9-])=@*)
+        PARTS=(${1//=/ })
+        KEY=${PARTS[0]:2}
+        VALUE="${1#*@}"
+        YTT_ARGS+=("--data-value-file" "options.$KEY=$VALUE")
+        shift
+        ;;
+    --+([.a-z0-9-])=*)
+        PARTS=(${1//=/ })
+        KEY=${PARTS[0]:2}
+        VALUE="${1#*=}"
+        YTT_ARGS+=("--data-value" "options.$KEY=$VALUE")
+        shift
+        ;;
+    --+([.a-z0-9-]))
+        KEY="${1:2}"
+        YTT_ARGS+=("--data-value-yaml" "options.$KEY=null")
+        shift
+        ;;
+    *)
+        SELECTORS+=("$1")
+        shift
+        ;;
+    esac
+done
+
+if [ ${#SELECTORS[@]} -lt 2 ]; then
+    echo "Usage: $(basename $0) resource [selector] name [options]" 1>&2
+    exit 1
+fi
+
+if [ ${#SELECTORS[@]} -eq 2 ]; then
+    YTT_ARGS+=("--data-value" "resource.type=${SELECTORS[0]}")
+    YTT_ARGS+=("--data-value" "resource.name=${SELECTORS[1]}")
+else
+    YTT_ARGS+=("--data-value" "resource.type=${SELECTORS[0]}")
+    YTT_ARGS+=("--data-value" "resource.selector=${SELECTORS[1]}")
+    YTT_ARGS+=("--data-value" "resource.name=${SELECTORS[2]}")
+fi
+
+# Run ytt passing it the location of out templates.
+
+ytt -f "$TEMPLATES_DIR" "${YTT_ARGS[@]}"

@@ -1,0 +1,28 @@
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: lab-ytt-wrappers-02
+spec:
+  title: "Wrapper scripts for ytt #2"
+  description: Using ytt to create a query processor for YAML/JSON documents.
+  workshop:
+    files:
+    - image:
+        url: $(image_repository)/labs-carvel-workshops-files:latest
+      includePaths:
+      - /workshops/lab-ytt-wrappers-02/workshop/**
+      - /workshops/lab-ytt-wrappers-02/exercises/**
+      - /workshops/lab-ytt-wrappers-02/bin/**
+      newRootPath: workshops/lab-ytt-wrappers-02
+  session:
+    namespaces:
+      budget: small
+      security:
+        token:
+          enabled: false
+    applications:
+      terminal:
+        enabled: true
+        layout: split
+      editor:
+        enabled: true

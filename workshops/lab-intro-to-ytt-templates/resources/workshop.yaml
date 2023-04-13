@@ -1,0 +1,24 @@
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: lab-intro-to-ytt-templates
+spec:
+  title: Introduction to using Carvel ytt templates
+  description: Using ytt templates when deploying applications to Kubernetes.
+  workshop:
+    files:
+    - image:
+        url: $(image_repository)/labs-carvel-workshops-files:latest
+      includePaths:
+      - /workshops/lab-intro-to-ytt-templates/exercises/**
+      - /workshops/lab-intro-to-ytt-templates/workshop/**
+      newRootPath: workshops/lab-intro-to-ytt-templates
+  session:
+    namespaces:
+      budget: small
+    applications:
+      terminal:
+        enabled: true
+        layout: split
+      editor:
+        enabled: true

@@ -1,0 +1,8 @@
+name: "Wrapper scripts for ytt #2"
+
+modules:
+    activate:
+        - workshop-overview
+        - exercises/01-overview-of-tools
+        - exercises/02-equivalent-tools
+        - workshop-summary

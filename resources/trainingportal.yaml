@@ -1,0 +1,42 @@
+apiVersion: training.educates.dev/v1beta1
+kind: TrainingPortal
+metadata:
+  name: labs-carvel-workshops
+spec:
+  portal:
+    registration:
+      type: anonymous
+    updates:
+      workshop: true
+    sessions:
+      maximum: 1
+    workshop:
+      defaults:
+        reserved: 1
+        initial: 0
+  workshops:
+  - name: lab-intro-to-carvel-tools
+    expires: 60m
+    overtime: 10m
+    deadline: 90m
+    orphaned: 5m
+  - name: lab-carvel-installation
+    expires: 15m
+    overtime: 5m
+    deadline: 25m
+    orphaned: 5m
+  - name: lab-kapp-controller
+    expires: 20m
+    overtime: 5m
+    deadline: 30m
+    orphaned: 5m
+  - name: lab-intro-to-ytt-templates
+    expires: 30m
+    overtime: 5m
+    deadline: 40m
+    orphaned: 5m
+  - name: lab-ytt-wrappers-01
+    expires: 15m
+    overtime: 5m
+    deadline: 25m
+    orphaned: 5m

@@ -1,0 +1,13 @@
+name: Using Kapp Controller
+
+modules:
+    activate:
+        - workshop-overview
+        - exercises/01-kapp-controller
+        - exercises/02-package-repositories
+        - exercises/03-available-packages
+        - exercises/04-installing-a-package
+        - exercises/05-deleting-a-package
+        - exercises/06-package-configuration
+        - exercises/07-updating-packages
+        - workshop-summary

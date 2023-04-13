@@ -1,0 +1,53 @@
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: lab-kapp-controller
+spec:
+  title: Using Kapp Controller
+  description: A workshop looking at managing package installation using Kapp Controller.
+  workshop:
+    files:
+    - image:
+        url: $(image_repository)/labs-carvel-workshops-files:latest
+      includePaths:
+      - /workshops/lab-kapp-controller/workshop/**
+      newRootPath: workshops/lab-kapp-controller
+  session:
+    applications:
+      terminal:
+        enabled: true
+        layout: split
+      vcluster:
+        enabled: true
+        resources:
+          syncer:
+            memory: 768Mi
+          k3s:
+            memory: 1Gi
+    objects:
+    - apiVersion: kappctrl.k14s.io/v1alpha1
+      kind: App
+      metadata:
+        name: kapp-controller
+        namespace: $(session_namespace)-vc
+      spec:
+        noopDelete: true
+        syncPeriod: 24h
+        cluster:
+          namespace: default
+          kubeconfigSecretRef:
+            name: $(vcluster_secret)
+            key: config
+        fetch:
+        - imgpkgBundle:
+            image: projects.registry.vmware.com/tce/kapp-controller@sha256:f6061b696e07a47f707af2e85a3df934c2cb041fe65d3df647bb39540747e012
+        template:
+        - ytt:
+            paths:
+            - config/
+        - kbld:
+            paths:
+            - '-'
+            - .imgpkg/images.yml
+        deploy:
+        - kapp: {}

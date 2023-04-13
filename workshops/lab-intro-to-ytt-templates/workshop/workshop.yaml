@@ -1,0 +1,16 @@
+name: Introduction to using Carvel ytt templates
+
+modules:
+    activate:
+    - workshop-overview
+    - setup-environment
+    - exercises/01-kubernetes-resources
+    - exercises/02-multiple-instances
+    - exercises/03-templates-vs-overlays
+    - exercises/04-processing-templates
+    - exercises/05-input-data-values
+    - exercises/06-value-annotations
+    - exercises/07-starlark-language
+    - exercises/08-conditional-logic
+    - exercises/09-data-values-files
+    - workshop-summary

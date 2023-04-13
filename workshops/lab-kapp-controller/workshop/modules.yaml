@@ -1,0 +1,21 @@
+modules:
+  workshop-overview:
+    name: Workshop Overview
+    exit_sign: Start Workshop
+  exercises/01-kapp-controller:
+    name: Kapp Controller
+  exercises/02-package-repositories:
+    name: Package Repositories
+  exercises/03-available-packages:
+    name: Available Packages
+  exercises/04-installing-a-package:
+    name: Installing a Package
+  exercises/05-deleting-a-package:
+    name: Deleting a Package
+  exercises/06-package-configuration:
+    name: Package Configuration
+  exercises/07-updating-packages:
+    name: Updating Packages
+  workshop-summary:
+    name: Workshop Summary
+    exit_sign: Finish Workshop

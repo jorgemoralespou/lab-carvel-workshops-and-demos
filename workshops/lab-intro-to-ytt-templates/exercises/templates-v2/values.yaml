@@ -1,0 +1,13 @@
+#@data/values
+---
+website:
+  name: website
+
+  ingress:
+    hostname: null
+    domain: null
+    class: null
+
+    secret:
+      certificate: null
+      privateKey: null

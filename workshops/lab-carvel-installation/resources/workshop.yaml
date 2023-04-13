@@ -1,0 +1,28 @@
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: lab-carvel-installation
+spec:
+  title: Installing Carvel tools and operators
+  description: A workshop describing how to install the Carvel tools and operators.
+  workshop:
+    files:
+    - image:
+        url: $(image_repository)/labs-carvel-workshops-files:latest
+      includePaths:
+      - /workshops/lab-carvel-installation/workshop/**
+      newRootPath: workshops/lab-carvel-installation
+  session:
+    namespaces:
+      budget: large
+    applications:
+      terminal:
+        enabled: true
+        layout: split
+      vcluster:
+        enabled: true
+        resources:
+          syncer:
+            memory: 768Mi
+          k3s:
+            memory: 1Gi

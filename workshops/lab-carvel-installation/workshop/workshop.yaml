@@ -1,0 +1,10 @@
+name: Installing Carvel tools and operators
+
+modules:
+    activate:
+        - workshop-overview
+        - exercises/01-overview-of-carvel
+        - exercises/02-installing-carvel-tools
+        - exercises/03-install-kapp-controller
+        - exercises/04-install-secretgen-controller
+        - workshop-summary

@@ -1,0 +1,12 @@
+name: "Wrapper scripts for ytt #1"
+
+modules:
+    activate:
+        - workshop-overview
+        - exercises/01-overview-of-tools
+        - exercises/02-creating-a-yaml-file
+        - exercises/03-yttv-implementation
+        - exercises/04-complex-structures
+        - exercises/05-convert-yaml-to-json
+        - exercises/06-convert-json-to-yaml
+        - workshop-summary

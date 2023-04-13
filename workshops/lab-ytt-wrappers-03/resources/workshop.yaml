@@ -1,0 +1,28 @@
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: lab-ytt-wrappers-03
+spec:
+  title: "Wrapper scripts for ytt #3"
+  description: Using ytt to create Kubernetes resources definitions from a starter template.
+  workshop:
+    files:
+    - image:
+        url: $(image_repository)/labs-carvel-workshops-files:latest
+      includePaths:
+      - /workshops/lab-ytt-wrappers-03/workshop/**
+      - /workshops/lab-ytt-wrappers-03/templates/**
+      - /workshops/lab-ytt-wrappers-03/bin/**
+      newRootPath: workshops/lab-ytt-wrappers-03
+  session:
+    namespaces:
+      budget: small
+      security:
+        token:
+          enabled: false
+    applications:
+      terminal:
+        enabled: true
+        layout: split
+      editor:
+        enabled: true

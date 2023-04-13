@@ -1,0 +1,155 @@
+#!/bin/bash
+
+SCRIPTS_DIR=$(
+    cd "$(dirname $BASH_SOURCE)"
+    pwd
+)
+
+# Process command line options.
+
+POSITIONAL_ARGS=()
+
+YTT_ARGS=()
+
+YTT_ARGS+=("--data-value-yaml" "_.input=yaml-document-set")
+
+YTT_ARGS+=("--data-value-yaml" "_.output=json")
+YTT_ARGS+=("--data-value-yaml" "_.raw=false")
+
+while [[ $# -gt 0 ]]; do
+    case $1 in
+    -f|--file|-v|--data-value|--data-value-file|--data-value-yaml|--data-values-env|--data-values-env-yaml|--data-values-file)
+        YTT_ARGS+=("$1" "$2")
+        shift
+        shift
+        ;;
+    -i|--input)
+        YTT_ARGS+=("--data-value-yaml" "_.input=$2")
+        shift
+        shift
+        ;;
+    -o|--output)
+        YTT_ARGS+=("--data-value-yaml" "_.output=$2")
+        shift
+        shift
+        ;;
+    -r|--raw)
+        YTT_ARGS+=("--data-value-yaml" "_.raw=true")
+        shift
+        ;;
+    --*)
+        echo "Error: unexpected option $1" 1>&2
+        exit 1
+        ;;
+    *)
+        POSITIONAL_ARGS+=("$1")
+        shift
+        ;;
+    esac
+done
+
+if [ ${#POSITIONAL_ARGS[@]} -eq 0 ]; then
+    echo "Usage: $(basename $0) program [filename] [options]" 1>&2
+    exit 1
+fi
+
+PROGRAM=${POSITIONAL_ARGS[0]}
+FILENAME=${POSITIONAL_ARGS[1]}
+
+if [ x"$PROGRAM" == x"" ]; then
+    echo "Usage: $(basename $0) program [filename] [options]" 1>&2
+    exit 1
+fi
+
+# Create a temporary working directory, including a subdirectory to save output
+# to.
+
+WORKDIR=$(mktemp -d -t yttq-XXXXXXXXXX)
+
+trap 'rm -rf -- "$WORKDIR"' EXIT
+
+mkdir $WORKDIR/output
+
+# If using stdin we need to capture the input.
+
+if [ x"$FILENAME" == x"" -o x"$FILENAME" == x"-" ]; then
+    FILENAME=$WORKDIR/input.yaml
+    cat > $FILENAME
+fi
+
+# Setup arguments for ytt. First we need to remap name of the supplied program
+# so that it uses a known fixed name as can't load Starlark files using a
+# dynamically generated name.
+
+YTT_ARGS+=("-f" "$PROGRAM")
+YTT_ARGS+=("--file-mark" "`basename $PROGRAM`:path=_/program.star")
+
+# Next we provide the input file, remapping the name so is fixed name and
+# declaring it as a data file as well since we read it contents explicity.
+
+YTT_ARGS+=("-f" "$FILENAME")
+YTT_ARGS+=("--file-mark" "`basename $FILENAME`:path=_/input.yaml")
+YTT_ARGS+=("--file-mark" "`basename $FILENAME`:type=data")
+
+# Finally setup file from which we will report the results of the program.
+# Because this is not YAML, we need to tell ytt to generate files into a
+# directory so we can get the results.
+
+cat > $WORKDIR/output.txt << EOF
+(@ load("@ytt:data", "data") -@)
+(@ load("@ytt:yaml", "yaml") -@)
+(@ load("@ytt:json", "json") -@)
+(@ load("@ytt:assert", "assert") -@)
+(@ load("_/program.star", "main") -@)
+(@ def xget(obj, key, default=None): -@)
+(@   keys = key.split(".") -@)
+(@   value = default -@)
+(@   for key in keys: -@)
+(@     value = obj.get(key) -@)
+(@     if value == None: -@)
+(@       return default -@)
+(@     end -@)
+(@     obj = value -@)
+(@   end -@)
+(@   return value -@)
+(@ end -@)
+(@ if data.values._.input == "yaml-document-set": -@)
+(@   input = [yaml.decode(document) for document in data.read("_/input.yaml").strip("---\n").split("---\n")] -@)
+(@ elif data.values._.input == "yaml": -@)
+(@   input = yaml.decode(data.read("_/input.yaml")) -@)
+(@ else: -@)
+(@   assert.fail("invalid input format") -@)
+(@ end -@)
+(@ result = main(input) -@)
+(@ if type(result) == "string" and data.values._.raw: -@)
+(@=  result -@)
+(@ else: -@)
+(@   if data.values._.output == "yaml": -@)
+(@=    yaml.encode(result) -@)
+(@   elif data.values._.output == "yaml-document-set": -@)
+(@     for item in result: -@)
+(@=        "---\n" -@)
+(@=        yaml.encode(item) -@)
+(@     end -@)
+(@   elif data.values._.output == "json": -@)
+(@=    json.encode(result) -@)
+(@   else: -@)
+(@     assert.fail("invalid output format") -@)
+(@   end -@)
+(@ end -@)
+EOF
+
+YTT_ARGS+=("-f" "$WORKDIR/output.txt")
+YTT_ARGS+=("--output-files" "$WORKDIR/output")
+
+# Run ytt. We need to capture stdout/stderr to a file and will only display that
+# if there is an error, otherwise we just display the output of the program.
+
+ytt "${YTT_ARGS[@]}" > $WORKDIR/errors.txt
+
+if [ "$?" != "0" ]; then
+    cat $WORKDIR/errors.txt 1>&2
+    exit 1
+else
+    cat $WORKDIR/output/output.txt
+fi

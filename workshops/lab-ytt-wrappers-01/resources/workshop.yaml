@@ -1,0 +1,27 @@
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: lab-ytt-wrappers-01
+spec:
+  title: "Wrapper scripts for ytt #1"
+  description: Using ytt to create an initial YAML configuration and converting between YAML and JSON.
+  workshop:
+    files:
+    - image:
+        url: $(image_repository)/labs-carvel-workshops-files:latest
+      includePaths:
+      - /workshops/lab-ytt-wrappers-01/workshop/**
+      - /workshops/lab-ytt-wrappers-01/bin/**
+      newRootPath: workshops/lab-ytt-wrappers-01
+  session:
+    namespaces:
+      budget: small
+      security:
+        token:
+          enabled: false
+    applications:
+      terminal:
+        enabled: true
+        layout: split
+      editor:
+        enabled: true

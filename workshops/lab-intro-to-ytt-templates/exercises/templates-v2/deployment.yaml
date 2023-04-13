@@ -1,0 +1,25 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: #@ data.values.website.name
+spec:
+  selector:
+    matchLabels:
+      app: #@ data.values.website.name
+  template:
+    metadata:
+      labels:
+        app: #@ data.values.website.name
+    spec:
+      containers:
+      - name: nginx
+        image: bitnami/nginx:latest
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: ["ALL"]
+          runAsNonRoot: true
+        ports:
+        - containerPort: 8080

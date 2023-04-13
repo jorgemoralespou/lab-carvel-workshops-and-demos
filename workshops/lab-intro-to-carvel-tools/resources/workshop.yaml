@@ -1,0 +1,32 @@
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: lab-intro-to-carvel-tools
+spec:
+  title: Introduction to the Carvel tools
+  description: Introducing to Carvel, simple and composable tools for application deployment.
+  workshop:
+    files:
+    - image:
+        url: $(image_repository)/labs-carvel-workshops-files:latest
+      includePaths:
+      - /workshops/lab-intro-to-carvel-tools/exercises/**
+      - /workshops/lab-intro-to-carvel-tools/workshop/**
+      newRootPath: workshops/lab-intro-to-carvel-tools
+  session:
+    namespaces:
+      budget: small
+    resources:
+      memory: 2Gi
+    applications:
+      terminal:
+        enabled: true
+        layout: split
+      console:
+        enabled: true
+      editor:
+        enabled: true
+      registry:
+        enabled: true
+      docker:
+        enabled: true

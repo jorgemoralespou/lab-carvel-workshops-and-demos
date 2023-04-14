@@ -1,0 +1,5 @@
+name: imgpkg demo
+
+modules:
+  activate:
+    - workshop-demo

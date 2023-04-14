@@ -1,0 +1,5 @@
+name: Vendir demo
+
+modules:
+  activate:
+    - workshop-demo

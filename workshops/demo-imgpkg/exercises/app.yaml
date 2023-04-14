@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: testapp
+  name: testapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: testapp
+  template:
+    metadata:
+      labels:
+        app: testapp
+    spec:
+      containers:
+        - image: gcr.io/kuar-demo/kuard-amd64:1
+          name: testapp
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: testapp
+  name: testapp
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: testapp
+  sessionAffinity: None
+  type: ClusterIP

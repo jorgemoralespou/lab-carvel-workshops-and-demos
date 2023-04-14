@@ -1,0 +1,26 @@
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: demo-imgpkg
+spec:
+  title: imgpkg (demo)
+  description: Package, distribute, and relocate your Kubernetes configuration and dependent OCI images as one OCI artifact, a bundle.
+  workshop:
+    files:
+      - image:
+          url: $(image_repository)/demo-imgpkg-files:latest
+          #url: registry.tdc-kceu-carvel-kiosk-7e8714a.tanzu-labs.esp.vmware.com/demo-imgpkg-files:latest
+        includePaths:
+          - /workshops/demo-imgpkg/exercises/**
+          - /workshops/demo-imgpkg/workshop/**
+        newRootPath: workshops/demo-imgpkg
+  session:
+    namespaces:
+      budget: large
+    applications:
+      terminal:
+        enabled: true
+      editor:
+        enabled: true
+      registry:
+        enabled: true

@@ -1,0 +1,15 @@
+apiVersion: training.educates.dev/v1beta1
+kind: TrainingPortal
+metadata:
+  name: demo-imgpkg
+spec:
+  portal:
+    registration:
+      type: anonymous
+    updates:
+      workshop: true
+  workshops:
+    - name: demo-imgpkg
+      capacity: 1
+      expires: 15m
+      orphaned: 5m

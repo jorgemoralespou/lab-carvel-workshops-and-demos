@@ -1,0 +1,25 @@
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: demo-vendir
+spec:
+  title: vendir
+  description: A demo showing vendir
+  workshop:
+    files:
+      - image:
+          url: $(image_repository)/demo-vendir-files:latest
+          #url: registry.apps.azure.tanzu-devs.com/demo-vendir-files:latest
+        includePaths:
+          - /workshops/demo-vendir/exercises/**
+          - /workshops/demo-vendir/workshop/**
+        newRootPath: workshops/demo-vendir
+  session:
+    namespaces:
+      budget: medium
+    applications:
+      terminal:
+        enabled: true
+        layout: split
+      editor:
+        enabled: true

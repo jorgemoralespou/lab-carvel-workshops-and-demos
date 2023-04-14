@@ -1,0 +1,9 @@
+#@data/values-schema
+---
+#@schema/validation min_len=1, max_len=8
+name: ""
+org: ""
+port: 80
+targetPort: 8080
+service:
+  enabled: true

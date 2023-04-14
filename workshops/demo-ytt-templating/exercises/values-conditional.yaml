@@ -1,0 +1,6 @@
+#@data/values
+---
+name: otherapp
+org: VMware
+service:
+  enabled: false

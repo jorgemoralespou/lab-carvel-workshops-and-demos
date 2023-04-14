@@ -1,0 +1,5 @@
+name: Ytt templating demo
+
+modules:
+  activate:
+    - workshop-demo

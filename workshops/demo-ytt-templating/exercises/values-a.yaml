@@ -1,0 +1,6 @@
+#@data/values
+---
+name: myapp
+org: CNCF
+port: 80
+targetPort: 8081

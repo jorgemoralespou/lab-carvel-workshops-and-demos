@@ -1,0 +1,24 @@
+apiVersion: training.educates.dev/v1beta1
+kind: Workshop
+metadata:
+  name: demo-ytt-templating
+spec:
+  title: ytt templates
+  description: A demo showing ytt templating
+  workshop:
+    files:
+      - image:
+          url: $(image_repository)/demo-ytt-templating-files:latest
+          #url: registry.apps.azure.tanzu-devs.com/demo-ytt-templating-files:latest
+        includePaths:
+          - /workshops/demo-ytt-templating/exercises/**
+          - /workshops/demo-ytt-templating/workshop/**
+        newRootPath: workshops/demo-ytt-templating
+  session:
+    namespaces:
+      budget: medium
+    applications:
+      terminal:
+        enabled: true
+      editor:
+        enabled: true
